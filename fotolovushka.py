@@ -34,6 +34,6 @@ def classify_image(image_path):
         return 'некачественное'
 
 
-image_path = '/home/stacy/Загрузки/3105-640x426.jpg'
+image_path = '/home/stacy/Загрузки/c1d6bb936e4cfe717d8b0764c260298f.jpg'
 classification = classify_image(image_path)
 print('Снимок с фотоловушки классифицирован как', classification)
