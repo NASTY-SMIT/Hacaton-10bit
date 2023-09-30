@@ -14,6 +14,7 @@ from tqdm import tqdm
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+
 def image_shower(images, labels, n=8):
     plt.figure(figsize=(12, 12))
     for i, image in enumerate(images[:n]):
@@ -21,6 +22,7 @@ def image_shower(images, labels, n=8):
         image = image / 2 + 0.5
         plt.imshow(image.numpy().transpose((1, 2, 0)).squeeze())
     print('Real labels: ', ' '.join('%5s' % classes[label] for label in labels[:n]))
+
 
 classes = ("With animal", "Zero animal")
 PATH = './animals'
