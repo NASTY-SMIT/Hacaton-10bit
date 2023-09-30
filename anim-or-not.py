@@ -11,7 +11,7 @@ import matplotlib
 from tqdm import tqdm
 
 # %matplotlib inline
-
+#Привет
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def image_shower(images, labels, n=8):
@@ -34,7 +34,7 @@ trainset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'train'), transfo
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, num_workers=0, shuffle=True)
 
 testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'), transform=transform)
-testloader = torch.utils.data.DataLoader(trainset, batch_size=64, num_workers=0, shuffle=True)
+testloader = torch.utils.data.DataLoader(testset, batch_size=64, num_workers=0, shuffle=True)
 
 images, labels = next(iter(trainloader))
 image_shower(images, labels)
