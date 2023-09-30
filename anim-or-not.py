@@ -27,23 +27,23 @@ classes = ("With animal", "Zero animal")
 PATH = './animals'
 
 transform = transforms.Compose(
-    [transforms.Resize((64,64)),
+    [transforms.Resize((256,256)),
      transforms.ToTensor(),
      transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
 trainset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'train'), transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, num_workers=0, shuffle=False)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, num_workers=0, shuffle=False)
 
 testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'), transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=64, num_workers=0, shuffle=True)
+testloader = torch.utils.data.DataLoader(testset, batch_size=128, num_workers=0, shuffle=True)
 
 images, labels = next(iter(trainloader))
 image_shower(images, labels)
 
 
-model = torchvision.models.resnet18(pretrained=True)
+model = torchvision.models.resnet50(pretrained=True)
 for param in model.parameters():
-    param.requires_grad = False
+    param.requires_grad = True
 model.fc = nn.Linear(512, 2)
 
 criterion = nn.CrossEntropyLoss()
