@@ -10,8 +10,6 @@ import numpy as np
 import matplotlib
 from tqdm import tqdm
 
-# %matplotlib inline
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -25,6 +23,7 @@ def image_shower(images, labels, n=8):
 
 
 classes = ("With animal", "Zero animal")
+
 PATH = './animals'
 
 transform = transforms.Compose(
@@ -33,7 +32,7 @@ transform = transforms.Compose(
      transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
 trainset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'train'), transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, num_workers=0, shuffle=True)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, num_workers=0, shuffle=False)
 
 testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'), transform=transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=64, num_workers=0, shuffle=True)
