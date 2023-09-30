@@ -1,14 +1,12 @@
 import os
 import torch
-import torch.nn as nn 
+import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib
 from tqdm import tqdm
+import pandas as pd
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -19,7 +17,8 @@ def image_shower(images, labels, n=8):
         plt.subplot(n, n, i + 1)
         image = image / 2 + 0.5
         plt.imshow(image.numpy().transpose((1, 2, 0)).squeeze())
-    print('Real labels: ', ' '.join('%5s' % classes[label] for label in labels[:n]))
+    print('Real labels: ', ' '.join(
+        '%5s' % classes[label] for label in labels[:n]))
 
 
 classes = ("With animal", "Zero animal")
@@ -31,11 +30,15 @@ transform = transforms.Compose(
      transforms.ToTensor(),
      transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
-trainset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'train'), transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, num_workers=0, shuffle=False)
+trainset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'train'),
+                                            transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64,
+                                          num_workers=0, shuffle=False)
 
-testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'), transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=128, num_workers=0, shuffle=True)
+testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'),
+                                           transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=64, num_workers=0,
+                                         shuffle=True)
 
 images, labels = next(iter(trainloader))
 image_shower(images, labels)
@@ -64,19 +67,34 @@ for epoch in range(epochs):
 
         running_loss += loss.item()
 
-    print('Epoch {} - Training loss: {} '.format(epoch, running_loss/len(trainloader)))
+    print(
+        'Epoch {} - Training loss: {} '.format(
+            epoch, running_loss/len(trainloader)))
 
 correct = 0
 total = 0
 with torch.no_grad():
     model.eval()
+    broken = []
+    animal = []
+    filenames = []
+
     for data in testloader:
         inputs, labels = data[0].to(device), data[1].to(device)
         outputs = model(inputs)
         _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
-print('Accuracy: %d' % (100 * correct/total))
+        for i in range(len(labels)):
+            if predicted[i] == 1:
+                broken.append(1)
+                animal.append(0)
+            else:
+                broken.append(0)
+                animal.append(1)
+            filenames.append(testset.imgs[i][0])
+
+    df = pd.DataFrame({'filename': filenames,
+                       'broken': broken, 'animal': animal})
+    df.to_csv('output.csv', index=False)
 
 images, labels = next(iter(testloader))
 image_shower(images, labels)
@@ -85,4 +103,5 @@ outputs = model(images.to(device))
 
 _, predicted = torch.max(outputs, 1)
 
-print("Predicted: ", " ".join("%5s" % classes[predict] for predict in predicted[:8]))
+print("Predicted: ", " ".join(
+    "%5s" % classes[predict] for predict in predicted[:8]))
