@@ -77,3 +77,12 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 print('Accuracy: %d' % (100 * correct/total))
+
+images, labels = next(iter(testloader))
+image_shower(images, labels)
+
+outputs = model(images.to(device))
+
+_, predicted = torch.max(outputs, 1)
+
+print("Predicted: ", " ".join("%5s" % classes[predict] for predict in predicted[:8]))
