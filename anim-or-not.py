@@ -11,7 +11,7 @@ import matplotlib
 from tqdm import tqdm
 
 # %matplotlib inline
-#Привет
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def image_shower(images, labels, n=8):
