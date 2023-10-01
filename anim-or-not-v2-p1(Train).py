@@ -43,7 +43,8 @@ for epoch in range(epochs):
 
         running_loss += loss.item()
 
-    print('Epoch {} - Training loss: {}'.format(epoch, running_loss/len(trainloader)))
+    print('Epoch {} - Training loss: {}'.format(
+        epoch, running_loss/len(trainloader)))
 
 # Сохранение модели
 torch.save(model.state_dict(), 'model.pth')

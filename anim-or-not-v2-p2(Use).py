@@ -8,13 +8,16 @@ import pandas as pd
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+
 def image_shower(images, labels, n=8):
     plt.figure(figsize=(12, 12))
     for i, image in enumerate(images[:n]):
         plt.subplot(n, n, i + 1)
         image = image / 2 + 0.5
         plt.imshow(image.numpy().transpose((1, 2, 0)).squeeze())
-    print('Real labels: ', ' '.join('%5s' % classes[label] for label in labels[:n]))
+    print('Real labels: ', ' '.join(
+        '%5s' % classes[label] for label in labels[:n]))
+
 
 classes = ("With animal", "Zero animal")
 
@@ -27,8 +30,9 @@ transform = transforms.Compose(
 
 testset = torchvision.datasets.ImageFolder(os.path.join(PATH, 'test'),
                                            transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=128, num_workers=0,
-                                         shuffle=True)
+testloader = torch.utils.data.DataLoader(
+    testset, batch_size=128, num_workers=0,
+    shuffle=True)
 
 model = torchvision.models.resnet18(pretrained=False)
 model.fc = nn.Linear(512, 2)
@@ -41,6 +45,7 @@ with torch.no_grad():
     model.eval()
     broken = []
     animal = []
+    empty = []
     filenames = []
 
     for data in testloader:
@@ -54,10 +59,11 @@ with torch.no_grad():
             else:
                 broken.append(0)
                 animal.append(1)
+            empty.append(0)
             filenames.append(testset.imgs[i][0])
 
-    df = pd.DataFrame({'filename': filenames,
-                       'broken': broken, 'animal': animal})
+    df = pd.DataFrame({'depl_pth': filenames,
+                       'animal': animal, 'empty': empty, 'broken': broken})
     df.to_csv('output.csv', index=False)
 
 images, labels = next(iter(testloader))
@@ -66,4 +72,5 @@ image_shower(images, labels)
 outputs = model(images.to(device))
 _, predicted = torch.max(outputs, 1)
 
-print("Predicted: ", " ".join("%5s" % classes[predict] for predict in predicted[:8]))
+print("Predicted: ", " ".join(
+    "%5s" % classes[predict] for predict in predicted[:8]))
