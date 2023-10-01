@@ -1,10 +1,10 @@
-depl_pth,animal,empty,broken
-./animals/test/With animal/011ce_1920x1024x0x202.jpg,1,0,0
-./animals/test/With animal/comedy-pet-photogr4__880-936x560.jpg,0,0,1
-./animals/test/With animal/istockphoto-1296353202-612x612.jpg,1,0,0
-./animals/test/With animal/week5_1100.jpg,1,0,0
-./animals/test/Zero animal/imagtes.jpg,1,0,0
-./animals/test/Zero animal/uu (1).jpg,0,0,1
-./animals/test/Zero animal/uu (2).jpg,0,0,1
-./animals/test/Zero animal/uu (3).jpg,1,0,0
-./animals/test/Zero animal/uu.jpg,0,0,1
+depl_pth;animal;empty;broken
+./animals/test/With animal/011ce_1920x1024x0x202.jpg;1;0;0
+./animals/test/With animal/comedy-pet-photogr4__880-936x560.jpg;0;0;1
+./animals/test/With animal/istockphoto-1296353202-612x612.jpg;1;0;0
+./animals/test/With animal/week5_1100.jpg;0;0;1
+./animals/test/Zero animal/imagtes.jpg;1;0;0
+./animals/test/Zero animal/uu (1).jpg;0;0;1
+./animals/test/Zero animal/uu (2).jpg;0;0;1
+./animals/test/Zero animal/uu (3).jpg;1;0;0
+./animals/test/Zero animal/uu.jpg;1;0;0

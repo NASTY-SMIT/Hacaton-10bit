@@ -64,7 +64,7 @@ with torch.no_grad():
 
     df = pd.DataFrame({'depl_pth': filenames,
                        'animal': animal, 'empty': empty, 'broken': broken})
-    df.to_csv('output.csv', index=False)
+    df.to_csv('output.csv', index=False, sep=';')
 
 images, labels = next(iter(testloader))
 image_shower(images, labels)
